@@ -1,0 +1,15 @@
+Three Pieces:
+
+virtualization, concurrency, presistence
+
+Design Goals:
+
+1.build up some abstractions in order to make the system convenient and easy to use
+
+2.provide high performance
+
+3.provide protection between applications, as well as between the OS and applications
+
+History:
+
+we can see these on other books
