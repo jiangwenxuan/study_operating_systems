@@ -1,4 +1,4 @@
-process:
+Process:
 
 mechanisms and policies
 
@@ -7,3 +7,11 @@ C's stack: local variables, function parameters, return addresses
 C's heap: dynamically-allocated data
 
 process states: running, ready, blocked
+
+fork(), wait(), and exec()
+
+
+
+Mechanism: Limited Direct Execution:
+
+user mode and kernel mode, use trap instruction
