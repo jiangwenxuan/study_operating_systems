@@ -1,0 +1,9 @@
+process:
+
+mechanisms and policies
+
+C's stack: local variables, function parameters, return addresses
+
+C's heap: dynamically-allocated data
+
+process states: running, ready, blocked
