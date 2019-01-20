@@ -14,4 +14,10 @@ fork(), wait(), and exec()
 
 Mechanism: Limited Direct Execution:
 
-user mode and kernel mode, use trap instruction
+user mode and kernel mode
+
+use trap instruction
+
+use timer interrupt to help os maintain control of the machine
+
+during a timer interrupt or system call, use context switch to change process
