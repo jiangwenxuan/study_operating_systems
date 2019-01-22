@@ -1,4 +1,4 @@
-Process:
+PROCESS:
 
 mechanisms and policies
 
@@ -12,7 +12,7 @@ fork(), wait(), and exec()
 
 
 
-Mechanism: Limited Direct Execution:
+MECHANISM: LIMITED DIRECT EXECUTION:
 
 user mode and kernel mode
 
@@ -21,3 +21,23 @@ use trap instruction
 use timer interrupt to help os maintain control of the machine
 
 during a timer interrupt or system call, use context switch to change process
+
+
+SCHEDULING: INTRODUCTION:
+
+two scheduling metrics: turearound time, response time
+
+five assumption:
+1. each job runs for the same amount of time
+2. all jobs arrive at the same time
+3. once started, each job runs to completion
+4. all jobs only use the cpu
+5. the run-time of each job is known
+
+First in, First out
+Shortest Job First
+Shortest Time-to-Completion First
+Round Robin
+Incorporating I/O
+
+if there is no more oracle
