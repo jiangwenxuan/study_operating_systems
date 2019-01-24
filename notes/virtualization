@@ -41,3 +41,23 @@ Round Robin
 Incorporating I/O
 
 if there is no more oracle
+
+
+SCHEDULING: THE MULTI-LEVEL FRRDBACK QUEUE:
+
+rules:
+1. if priority(a) > priority(b), a runs(b doesn't)
+2. if priority(a) = priority(b), a & b run in round-robin fachion using the time slice of the given queue
+3. while a job enters the system, it is placed at the highest priority(the topmost queue)
+4. once a job uses up its time allotment at a given level(regardless of how many times it has given up the cpu, its prority is reduce
+5. after some time period s, move all the jobs in the system to the topmost queue
+
+
+
+
+
+
+
+
+
+
