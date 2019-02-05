@@ -43,7 +43,7 @@ Incorporating I/O
 if there is no more oracle
 
 
-SCHEDULING: THE MULTI-LEVEL FRRDBACK QUEUE:
+SCHEDULING: THE MULTI-LEVEL FEEDBACK QUEUE:
 
 rules:
 1. if priority(a) > priority(b), a runs(b doesn't)
@@ -53,8 +53,19 @@ rules:
 5. after some time period s, move all the jobs in the system to the topmost queue
 
 
+SCHEDULING: PROPORTIONAL SHARE
+
+the concept of proportional-share scheduling and briefly diccussed three approaches:
+1. lottery scheduling: randomness to achieve proportional share
+2. stride scheduling: deterministically
+3. the completely fair scheduler of linux: weighted round-robin with dynamic time slices
 
 
+THE ABSTRACTION: ADDRESS SPACES
+
+virtual address, physical address
+
+transparency, efficiency, protection
 
 
 
