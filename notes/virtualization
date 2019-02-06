@@ -68,6 +68,22 @@ virtual address, physical address
 transparency, efficiency, protection
 
 
+INTERLUDE: MEMORY API
+
+malloc(), free() in c language
+
+forget to allocate memory: segmentation fault
+not allocate enough memory: buffer overflow
+forget to initialize allocated memory: uninitialized read
+forget to free memory: memory leak
+free memory before you are done with it: dangling pointer
+free memory repeatly: double free
+call free() incorrectly: invalid frees
+
+
+
+
+
 
 
 
