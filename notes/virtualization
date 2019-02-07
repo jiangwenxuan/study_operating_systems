@@ -81,10 +81,20 @@ free memory repeatly: double free
 call free() incorrectly: invalid frees
 
 
+MECHANISM: ADDRESS TRANSLATION
 
+to attain both efficiency and control while provide the desired virtulization, we use hardware support
 
+rudimentaryly: just a few registers
 
+hardware-based address translation(address translation): transforms the virtual address to physical address
 
+dynamic(hardware-based) relocation: base and bounds
+base and bounds registers are hardware struction kept on the chip
+the part of the processor that helps with the address translation the memory management unit(MMU)
 
-
-
+os need implement base-and-bounds version of virtual memory:
+1. when a process is created, find space for its address space in memory
+2. os must do some work when a process is terminated
+3. os must perform a few additional steps when a context switch occurs 
+4. os must provide exception handlers
