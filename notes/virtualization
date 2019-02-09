@@ -98,3 +98,24 @@ os need implement base-and-bounds version of virtual memory:
 2. os must do some work when a process is terminated
 3. os must perform a few additional steps when a context switch occurs 
 4. os must provide exception handlers
+
+
+SEGMENTATION
+
+have a base and bounds pair per logical segment of the address space
+
+a segment is just a contiguous portion of the address space of a particular length
+
+segmentation allows the os to do is to place each one of those segments in different parts of physical memory, and thus avoid filling physical memory with unused virtual address space
+
+calcualte the offset correctly
+
+an explicit approach to refer to the segments
+
+support for sharing
+
+fined-grained and coarse-grained segmentation
+
+
+FREE-SPACE MANAGEMENT
+

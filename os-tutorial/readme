@@ -1,0 +1,3 @@
+my compuper os is ubuntu16.04 and windows 10.
+my cpu instruction set is x86_64.
+change command: qemu to command: qemu-system-x86_64.
