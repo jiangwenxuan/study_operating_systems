@@ -1,121 +1,195 @@
 PROCESS:
 
-mechanisms and policies
+	mechanisms and policies
 
-C's stack: local variables, function parameters, return addresses
+	C's stack: local variables, function parameters, return addresses
 
-C's heap: dynamically-allocated data
+	C's heap: dynamically-allocated data
 
-process states: running, ready, blocked
+	process states: running, ready, blocked
 
-fork(), wait(), and exec()
+	fork(), wait(), and exec()
 
 
 
 MECHANISM: LIMITED DIRECT EXECUTION:
 
-user mode and kernel mode
+	user mode and kernel mode
 
-use trap instruction
+	use trap instruction
 
-use timer interrupt to help os maintain control of the machine
+	use timer interrupt to help os maintain control of the machine
 
-during a timer interrupt or system call, use context switch to change process
+	during a timer interrupt or system call, use context switch to change process
 
 
 SCHEDULING: INTRODUCTION:
 
-two scheduling metrics: turearound time, response time
+	two scheduling metrics: turearound time, response time
 
-five assumption:
-1. each job runs for the same amount of time
-2. all jobs arrive at the same time
-3. once started, each job runs to completion
-4. all jobs only use the cpu
-5. the run-time of each job is known
+	five assumption:
+		
+		1. each job runs for the same amount of time
+		
+		2. all jobs arrive at the same time
+		
+		3. once started, each job runs to completion
+		
+		4. all jobs only use the cpu
+		
+		5. the run-time of each job is known
 
-First in, First out
-Shortest Job First
-Shortest Time-to-Completion First
-Round Robin
-Incorporating I/O
+	First in, First out
+	
+	Shortest Job First
+	
+	Shortest Time-to-Completion First
+	
+	Round Robin
+	
+	Incorporating I/O
 
-if there is no more oracle
+	if there is no more oracle
 
 
 SCHEDULING: THE MULTI-LEVEL FEEDBACK QUEUE:
 
-rules:
-1. if priority(a) > priority(b), a runs(b doesn't)
-2. if priority(a) = priority(b), a & b run in round-robin fachion using the time slice of the given queue
-3. while a job enters the system, it is placed at the highest priority(the topmost queue)
-4. once a job uses up its time allotment at a given level(regardless of how many times it has given up the cpu, its prority is reduce
-5. after some time period s, move all the jobs in the system to the topmost queue
+	rules:
+		
+		1. if priority(a) > priority(b), a runs(b doesn't)
+		
+		2. if priority(a) = priority(b), a & b run in round-robin fachion using the time slice of the given queue
+		
+		3. while a job enters the system, it is placed at the highest priority(the topmost queue)
+		
+		4. once a job uses up its time allotment at a given level(regardless of how many times it has given up the cpu, its prority is reduce
+		
+		5. after some time period s, move all the jobs in the system to the topmost queue
 
 
 SCHEDULING: PROPORTIONAL SHARE
 
-the concept of proportional-share scheduling and briefly diccussed three approaches:
-1. lottery scheduling: randomness to achieve proportional share
-2. stride scheduling: deterministically
-3. the completely fair scheduler of linux: weighted round-robin with dynamic time slices
+	the concept of proportional-share scheduling and briefly diccussed three approaches:
+		
+		1. lottery scheduling: randomness to achieve proportional share
+		
+		2. stride scheduling: deterministically
+		
+		3. the completely fair scheduler of linux: weighted round-robin with dynamic time slices
 
 
 THE ABSTRACTION: ADDRESS SPACES
 
-virtual address, physical address
+	virtual address, physical address
 
-transparency, efficiency, protection
+	transparency, efficiency, protection
 
 
 INTERLUDE: MEMORY API
 
-malloc(), free() in c language
+	malloc(), free() in c language
 
-forget to allocate memory: segmentation fault
-not allocate enough memory: buffer overflow
-forget to initialize allocated memory: uninitialized read
-forget to free memory: memory leak
-free memory before you are done with it: dangling pointer
-free memory repeatly: double free
-call free() incorrectly: invalid frees
+	forget to allocate memory: segmentation fault
+	
+	not allocate enough memory: buffer overflow
+	
+	forget to initialize allocated memory: uninitialized read
+	
+	forget to free memory: memory leak
+
+	free memory before you are done with it: dangling pointer
+
+	free memory repeatly: double free
+
+	call free() incorrectly: invalid frees
 
 
 MECHANISM: ADDRESS TRANSLATION
 
-to attain both efficiency and control while provide the desired virtulization, we use hardware support
+	to attain both efficiency and control while provide the desired virtulization, we use hardware support
 
-rudimentaryly: just a few registers
+	rudimentaryly: just a few registers
 
-hardware-based address translation(address translation): transforms the virtual address to physical address
+	hardware-based address translation(address translation): transforms the virtual address to physical address
 
-dynamic(hardware-based) relocation: base and bounds
-base and bounds registers are hardware struction kept on the chip
-the part of the processor that helps with the address translation the memory management unit(MMU)
+	dynamic(hardware-based) relocation: base and bounds
 
-os need implement base-and-bounds version of virtual memory:
-1. when a process is created, find space for its address space in memory
-2. os must do some work when a process is terminated
-3. os must perform a few additional steps when a context switch occurs 
-4. os must provide exception handlers
+	base and bounds registers are hardware struction kept on the chip
+
+	the part of the processor that helps with the address translation the memory management unit(MMU)
+
+	os need implement base-and-bounds version of virtual memory:
+
+		1. when a process is created, find space for its address space in memory
+
+		2. os must do some work when a process is terminated
+
+		3. os must perform a few additional steps when a context switch occurs 
+
+		4. os must provide exception handlers
 
 
 SEGMENTATION
 
-have a base and bounds pair per logical segment of the address space
+	have a base and bounds pair per logical segment of the address space
 
-a segment is just a contiguous portion of the address space of a particular length
+	a segment is just a contiguous portion of the address space of a particular length
 
-segmentation allows the os to do is to place each one of those segments in different parts of physical memory, and thus avoid filling physical memory with unused virtual address space
+	segmentation allows the os to do is to place each one of those segments in different parts of physical memory, and thus avoid filling physical memory with unused virtual address space
 
-calcualte the offset correctly
+	calcualte the offset correctly
 
-an explicit approach to refer to the segments
+	an explicit approach to refer to the segments
 
-support for sharing
+	support for sharing
 
-fined-grained and coarse-grained segmentation
+	fined-grained and coarse-grained segmentation
 
 
 FREE-SPACE MANAGEMENT
 
+	now, we focus on external fragmentation
+
+	some common mechanisms used in most allocators:
+
+		1. splitting and coalescing
+
+		2. how to track the size of allocated regions quickly and with relative ease:
+
+			typedef struct __header_t {
+				int size;
+				int magic; // integrity check
+			} header_t;
+
+			void free(void* ptr) {
+				header_t* hptr = (void*) ptr - sizeof(header_t);
+			}
+
+			the size of the free region is the size of the header plus the size of the space allocated to the user;
+			when a user requests N bytes of the memory, the library searches for a free chunk of size N plus the size of the header
+
+		3. how to build a simple list inside the free space to keep track of what is free and what isn't:
+
+			typeded struct __node_t {
+				int size;
+				struct __node_t *next;
+			} node_t;
+
+			// mmap() returns a pointer to a chunk of free space
+			node_t* head = mmap(NULL, 4096, PROT_READ|PROT_WRITE, MAP_ANON|MAP_PRIVATE, -1, 0);
+			head->size = 4096 - sizeof(node_t);
+			head->next = NULL;
+
+	basic strategies:
+
+		1. best fit
+
+		2. worst fit
+
+		3. first fit
+
+		4. next fit
+
+	segregated lists
+
+	buddy allocation
