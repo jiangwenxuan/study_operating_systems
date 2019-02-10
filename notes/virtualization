@@ -193,3 +193,74 @@ FREE-SPACE MANAGEMENT
 	segregated lists
 
 	buddy allocation
+
+
+PAGING: INTRODUCTION
+
+	segmentation: chop things up into variable-sized pieces
+
+	paging: chop up space into fixed-sized pieces
+
+	divide virtual memory into prices: page; divide phydical memory into pieces: page frames
+
+	page table: record each virtual page of the address space is placed in physical memory, os keeps a per-process data structure, the major role of page table is to store address translations for each of the virtual pages of the address space
+
+	translate virtual address:
+		va => virtual page number(VPN) + offset
+
+		1. turn virtual address into binary form and find the VPN
+
+		2. index the page table and find which physical frame VPN resides within
+
+		3. find physical frame number(PFN, physical page number) and translate va by replacing the VPN with the PFN
+
+	where are these page tables stored?
+
+		page tables are big, don't keep any special on-chip hareware in the MMU to store the page table;
+		page tables live in physical memory that os manages 
+
+	what are the typical contents of the page table?
+
+		1. page table is a data structure that is used to map VPN to PFN
+
+		2. simplest form is called a linear page table, which is just an array
+
+		3. the os indexes the array by the VPN and looks up the page-table entry(PTE) in order to find the desired PFN
+
+		4. page-table entry contains PFN, valid bit, protection bits, present bit, dirty bit, reference bit(access bit) and so on
+
+	how big are the tables?
+
+	does paging make the system slow?
+
+		yes!
+
+		movl <va>, %eax (just examine the explicit reference to va and not worry about the instruction fetch):
+
+			1. translate va into the correct physical address
+
+			2. fetch the proper page table entry from the process's page table and perform the translation
+
+			3. fetch the data from pa
+
+			// extract the VPN from the virtual address
+			vpn = (virtual_address & vpn_mask) >> shift
+
+			// form the address of the page-table entry
+			pteAddr = ptbr + (vpn * sizeof(pte))
+
+			// fetch the pte
+			pte = accessMemory(pteAddr)
+
+			// check if process can access the page
+			if (pte.valid == false)
+				raiseException(SEGMENTATION_FAULT)
+			else if (canAccess(pte.protectBits) == false)
+				raiseException(PROTECTION_FAULT)
+			else
+				// access is ok: form physical address and fetch it
+				offset = virtualAddress & OFFSET_MASK
+				physAddr = (pte.PFN << PFN_SHIFT) | offset
+				register = accessMemory(pyhsAddr)
+
+	

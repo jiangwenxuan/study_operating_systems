@@ -1,3 +1,10 @@
-my compuper os is ubuntu16.04 and windows 10.
-my cpu instruction set is x86_64.
-change command: qemu to command: qemu-system-x86_64.
+my compuper os is ubuntu16.04 and windows 10
+
+my cpu instruction set is x86_64
+
+notice: change command: "qemu" to command: "qemu-system-x86_64"
+
+if you want to finish this lab, you should read write_a_simple_os in pdf
+
+nasm -fbin x.asm -o x.bin
+qemu-system-x86_64 x.bin
