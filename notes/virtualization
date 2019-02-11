@@ -263,4 +263,64 @@ PAGING: INTRODUCTION
 				physAddr = (pte.PFN << PFN_SHIFT) | offset
 				register = accessMemory(pyhsAddr)
 
-	
+
+PAGING: FASTER TRANSLATIONS(TLBS)
+
+	to speed address translation, we use translation-lookaside buffer(TLB)
+
+	TLB is part of the chip's memory-management unit(MMU), and is simply a hardware cache of popular virtual-to-physical address translations, so TLB is also called address-translation cache
+
+	TLB basic algorithm:
+		VPN = (VirtualAddress & VPN_MASK) >> SHIFT
+		(Success, TlbEntry) = TLB_LOOKUP(VPN)
+		if (Success == True) // TLB hit
+			if (CanAccess(TlbEntry.ProtectBit) == True)
+				Offset = VirtualAddress & OFFSET_MASK
+				PhysAddr = (TlbEntry.PFN << SHIFT) | Offset
+				Register = AccessMemory(PhysAddr)
+			else
+				RaiseException(PROTECTION_FAULT)
+		else
+			PTEAddr = PTBR + (VPN * sizeof(PTE))
+			PTE = AccessMemory(PTEAddr)
+			if (PTE.Valid == False)
+				RaiseException(SEGMENTATION_FAULT)
+			else if (CanAccess(PTE.ProtectBits) == False)
+				RaiseException(PROTECTION_FAULT)
+			else
+				TLB_Insert(VPN, PTE.PFN, PTE.ProtectBits)
+				RetryInstruction()
+
+	cache is one of the most fundamental performance techniques in computer systems, the idea of hardware cache is to take advantage of locality(temporal locality and spatial locality) in instruction and data references
+
+	if you want a fast cache, it has to be small
+
+	who handles the TLB miss?
+
+		1. hardware(in the olden days): hardware had complex instruction sets(CISC, such as: intel x86 architecture), hardware handle the TLB miss, the hardware has to know exactly where the page tables are located in memory(via a page-table base register), on a miss, the hardware "walk" the page table, find the correct page-table entry and extract the desired instruction
+
+		2. software(os): on a TLB miss, the hardware simply raises an exception which pauses the current instruction stream, raises the privilege level to kernel mode, and jumps to a trap handler
+
+	RISC(reduced instruction set computing), CISC(complex instruction set computing)
+
+	notice: TLB valid bit ISN'T page table valid bit
+
+	TLB has VPN, PFN, and other bits(a valid bit, protection bits, address-space identifier, a dirty bit and so forth)
+
+	when switching between processes(and hence address spaces), some new issues arise:
+
+		1. the TLB contains virtual-to-physical translations that are only valid for the currently running process(meaningless for other processes)
+
+		2. when switching from one process to another, the hardware or os must be careful to ensure the about-to-run process does not accidentally use translations from some previously run process
+
+		3. solutions:
+
+		   	(1): simply flush the TLB on context switches, emptying it before running the next process
+
+		   	(2): some systems add hardware support to enable sharing of the TLB across context switches, such as: provide an address space identifier(ASID), which is just like a process identifier(PID)
+
+	replacement policy(we must consider cache replacement, when we install a new entry, we have to replace an old one, which one to replace?):
+
+		1. least-recently-used(LRU)
+
+		2. random policy
