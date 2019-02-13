@@ -324,3 +324,46 @@ PAGING: FASTER TRANSLATIONS(TLBS)
 		1. least-recently-used(LRU)
 
 		2. random policy
+
+
+PAGING: SMALLER TABLES
+
+	how to make page table smaller?
+
+		1. bigger pages
+
+		2. paging and segments
+
+		3. multi-level page tables
+
+			VPN = (VirtualAddress & VPN_MASK) >> SHIFT
+			(Success, TlbEbtry) = TLB_Lookup(VPN)
+			if (Success == True) // TLB hit
+				if (CanAccess(TlbEntry.ProtectBits) == True)
+					offset = VirtualAddress & OFFSET_MASK
+					PhysAddr = (TlbEntry.PFN << SHIFT) | offset
+				else
+					RaiseException(PROTECTION_FAULT)
+			else // TLB Miss
+				// first, get page directory entry
+				PDIndex = (VPN & PD_MASK) >> PD_SHIFT
+				PDEAddr = PDBR + (PDIndex * sizeof(PDE))
+				PDE = AccessMemory(PDEAddr)
+				if (PDE.Valid == False)
+					RaiseException(SEGMENTATION_FAULT)
+				else
+					// PDE is valid: not fetch PTE from page table
+					PTIndex = (VPN & PT_MASK) >> PT_SHIFT
+					PTEAddr = (PDE.PFN << SHIFT) + (PTIndex * sizeof(PTE))
+					PTE = AccessMemory(PTEAddr)
+					if (PTE.Valid == False)
+						RaiseException(SEGMENTATION_FAULT)
+					else if (CanAccess(PTE.ProtectBits) == False)
+						RaiseException(PROTECTION_FAULT)
+					else
+						TLB_Insert(VPN, PTE.PFN, PTE.ProtectBits)
+						RetryInstruction()
+
+		4. inverted page tables
+
+		5. swapping
