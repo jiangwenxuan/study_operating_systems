@@ -367,3 +367,41 @@ PAGING: SMALLER TABLES
 		4. inverted page tables
 
 		5. swapping
+
+
+BEYOND PHYSICAL MEMORY: MECHANISMS
+
+	how to access more memory than physically present within a system: more complexity in page-table structures:
+
+		1. present bit
+
+		2. page-fault handler to service the page fault
+
+		3. arrange for the transfer of the desired page from disk to memory
+
+		4. these actions all take place transparently to the process
+
+
+BEYOND PHYSICAL MEMORY: POLICIES
+
+	how to decide whick page to evict: decision is made by the replacement policy of the system
+
+	AMAT(average memory access time): AMAT = Tm + (Pmiss * Td)
+
+	the optimal replacement policy: replace the page that will accessed furthest in the future, which result in the fewest-possible cache miss
+
+	policy:
+
+		1. FIFO(first in, first out): just like a queue
+
+		2. RANDOM
+
+		3. LRU(least-recently-used)
+
+		4. LFU(least-frequently-used)
+
+		5. clock algorithm(approximating LRU): need hardware support: a use bit
+
+		6. consider dirty pages(based on clock algorithm): need hardware support: a dirty bit
+
+		7. other VM policies: prefetching and grouping of writes
