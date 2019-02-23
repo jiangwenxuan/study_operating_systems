@@ -1,0 +1,23 @@
+CONCURRENCY: AN INTRODUCTION
+
+	thread: a new abstraction for a single running process
+
+	each thread has its own private set of registers it uses for cumputation, and a context switch must take place
+
+	why we use threads: parallelism and avoid blocking program progress due to slow I/O
+
+	threads make life complcated: it is already hard to tell what will run when
+
+	why it gets worse: shared data
+
+	the heart of the problem: uncontrolled scheduling
+
+	key concurrency terms:
+
+		1. critical section: a piece of code that accesses a shared resource, usually a variable or data structure
+
+		2. race condition(data race): arises if multiple threads of execution enter the critical section at roughly the same time; both attempt to update the shared data structure, leading to a surprising outcome
+
+		3. indeterminate: an this problem consists of more race conditions, the output of the program varies from run to run, depending on which threads ran when. the outcome is thus not deterministic
+
+		4. mutual exclusion: doing so guarantees that only a single thread ever enters a critical section, thus avoiding races, and resulting in deterministic program outputs 
