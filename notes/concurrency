@@ -88,3 +88,14 @@ LOCK-BASED CONCURRENT DATA STRUCTURES:
 		2. concurrent queues
 
 		3. concurrent hash table
+
+
+CONDITION VARIABLES:
+
+	in multi-threaded programs, it is often useful for a thread to wait for some condition to become true before proceeding, spinning until condition becomes true is inefficient
+
+	a condition variable is an explicit queue that threads can put themslves on when some state of execution is not as desired
+
+	the producer/consumer (bounded buffer) problem
+
+	covering conditions
