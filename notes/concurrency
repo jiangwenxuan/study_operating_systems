@@ -21,3 +21,70 @@ CONCURRENCY: AN INTRODUCTION
 		3. indeterminate: an this problem consists of more race conditions, the output of the program varies from run to run, depending on which threads ran when. the outcome is thus not deterministic
 
 		4. mutual exclusion: doing so guarantees that only a single thread ever enters a critical section, thus avoiding races, and resulting in deterministic program outputs 
+
+
+INTERLUDE: THREAD API
+
+	thread creation
+
+	thread completion
+
+	locks
+
+	condition variables
+
+
+LOCKS(codes are in ../homework/learn_threads/lock.c):
+
+	a lock is a variable, to use one, we must declare a lock variable of some kind
+
+	lock variable holds the state of the lock at any instant in time, it is either available(or unlock or free)
+
+	view threads as entities created by the programmer but scheduled by the os, locks yields some of that control back to the programmer 
+
+	how to build a working lock: hardware, os
+
+	evaluating locks:
+
+		1. whether the lock does its basic work: provide mutual exclusion
+
+		2. fairness: does each thread contending for the lock get a fair shot at acquiring it once it is free?
+
+		3. performace
+
+	controlling interrupts
+
+	a failed attempt: just using loads/stores
+
+	building working spin locks with test-and-set
+
+	evaluating spin locks:
+
+		1. it provide mutual exclusion
+
+		2. spin locks can't provide any fairness guarantees
+
+		3. on single cpu: spin locks works badly; on multiple cpus: spin locks works well
+
+	compare-and-swap
+
+	load-linked and store-conditional
+
+	fetch-and-add
+
+	how to avoid spinning: a thread spins will waste an entire time slice doing nothing but checking a value which isn't going to change
+
+		1. a simple approach: just yield
+
+		2. using queues: sleeping instead of spinning
+
+
+LOCK-BASED CONCURRENT DATA STRUCTURES:
+
+	how to add locks to data structures:
+
+		1. concurrent linked lists
+
+		2. concurrent queues
+
+		3. concurrent hash table
