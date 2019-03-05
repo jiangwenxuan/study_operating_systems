@@ -99,3 +99,20 @@ CONDITION VARIABLES:
 	the producer/consumer (bounded buffer) problem
 
 	covering conditions
+
+
+SEMAPHORES:
+
+	see the codes "../homework/learn_threads"
+
+	binary semaphores(locks)
+
+	semaphores for ordering
+
+	the producer/consumer(bounded buffer) problem
+
+	reader-writer locks
+
+	the dining philosophers
+
+	how to implement semaphores
