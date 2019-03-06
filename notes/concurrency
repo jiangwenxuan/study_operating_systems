@@ -116,3 +116,26 @@ SEMAPHORES:
 	the dining philosophers
 
 	how to implement semaphores
+
+
+COMMON CONCURRENCY PROBLEMS:
+
+	types of bugs: non-deadlock bugs and deadlock bugs
+
+	non-deadlock bugs: atomicity violation and order violation
+
+	deadlock bugs: 
+
+		1. conditions for deadlock: mutual exclusion, hold-and-wait, no preemption, circular wait
+
+		2. prevention circular wait: provide a total ordering or a partical ordering on lock acquisition
+
+		3. prevention hold-and-wait: by first grabbing the lock prevention which is a global prevention lock
+
+		4. prevention no preemption: pthread_mutex_trylock() either grabs the lock and return success or error code indicating the lock is held, this method arise another problem: livelock, and we can add a random delay to avoid livelock
+
+		5. prevention mutual exclusion: instead of acquiring a lock, doing the update, and then releasing it(livelock is still a problem)
+
+		6. deadlock avoidance via scheduling
+
+		7. detect and recover
