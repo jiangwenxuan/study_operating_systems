@@ -1,0 +1,7 @@
+I/O DEVICES:
+	
+	two techniques: the interrupt and DMA
+
+	two approaches to accessing device registers: explicit I/O instructions and memory-mapped I/O
+
+	a device driver: how the os itself can eccapsulate low-level details and thus make it easier to build the rest of the os in a device-neutral fashion
